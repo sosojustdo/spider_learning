@@ -1,8 +1,7 @@
 # -*- coding:UTF-8 -*-
 from bs4 import BeautifulSoup
 import requests, sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
 
 """
 类说明:下载《笔趣看》网小说《一念永恒》
