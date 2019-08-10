@@ -2,6 +2,8 @@ import threading
 import wget
 import time
 import os
+
+from urllib.error import HTTPError, ContentTooShortError
 from requests_html import HTMLSession
 
 session = HTMLSession()
@@ -35,16 +37,23 @@ category_map_link = {
 }
 
 # 多线程配置信息
-threadLock = threading.Lock()
+#threadLock = threading.Lock()
 threads = []
 
 # 下载图片操作
 def downloadImage(img_name_map_full_url, dir):
     for img_name, full_img_url in img_name_map_full_url.items():
-        threadLock.acquire()
-        #time.sleep(0.5)
-        wget.download(full_img_url, dir + img_name)
-        threadLock.release()
+        #threadLock.acquire()
+        download(full_img_url, dir + img_name)
+        #threadLock.release()
+
+def download(url, out):
+    time.sleep(0.2)
+    try:
+        wget.download(url, out)
+    except (HTTPError, ContentTooShortError) as e:
+        print("download image error, reason: " + e.reason + "\n" + "download params url: " + url + " out: " + out)
+        download(url, out)
 
 for category, category_link in category_map_link.items():
     # 判断图片存储目录
@@ -73,8 +82,6 @@ for category, category_link in category_map_link.items():
 
             good_link = "https://www.hibobi.com" + good.find('a')[0].attrs['href']
             img_name_map_good_link[img_name] = good_link
-
-        #downloadImage(img_name_map_full_url, path)
 
         t = threading.Thread(target=downloadImage, name='download-image-%s' % category + str(page), args=(img_name_map_full_url, path))
         threads.append(t)
