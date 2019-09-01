@@ -201,7 +201,7 @@ class AliExpressSpider(scrapy.Spider):
             if self.settings.getint("WEB_DRIVE", 0) == 1:
                 driver = webdriver.Firefox()
             else:
-                driver = webdriver.Chrome()
+                driver = webdriver.Chrome('/Users/daipeng/develop/chromedriver/chromedriver')
             driver.get("https://login.aliexpress.com")
             is_login = False
             while not is_login:

@@ -4,7 +4,7 @@ from tkinter import scrolledtext
 
 window = tk.Tk() # Create instance
 window.title('图片处理工具') # Add a title
-window.geometry('800x400')
+window.geometry('1024x800')
 
 tabControl = ttk.Notebook(window) # Create Tab Control
 tab1 = ttk.Frame(tabControl) # Create a Tab
